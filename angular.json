@@ -31,9 +31,7 @@
               "./node_modules/@nebular/theme/styles/prebuilt/default.css",
               "src/styles.scss"
             ],
-            "scripts": [
-              "src/assets/opencv.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -97,9 +95,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [
-              "src/assets/opencv.js"
-            ]
+            "scripts": []
           }
         },
         "lint": {
