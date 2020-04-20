@@ -1,27 +1,51 @@
-# FaceDetectionJs
+Steps to build opencv.js from source
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+Install Emscripten
 
-## Development server
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+git pull
+./emsdk install latest
+./emsdk activate latest
+source ./emsdk_env.sh
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Clone Opencv source
 
-## Code scaffolding
+git clone https://github.com/opencv/opencv.git
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Build Opencv.js
 
-## Build
+cd {opencv_dir}
+python ./platforms/js/build_js.py build_js
+With WASM (Recommend to use with nodejs)
+python ./platforms/js/build_js.py build_wasm --build_wasm
+Build doc
+python ./platforms/js/build_js.py build_js --build_doc
+Build test
+python ./platforms/js/build_js.py build_js --build_test
+If can't find emsdk directory with ENV EMSCRIPTEN
+python ./platforms/js/build_js.py build_js --emscripten_dir={emsdk_dir}
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Import opencv.js in Angular
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+Copy opencv.js file from build dir to assets/ in Angular project
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
+Open file angular.json, find "scripts" and add link to opencv.js. It will look like this:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+"scripts": [
+  "src/assets/opencv.js"
+]
+
+Using opencv.js in component
+
+Before init @Component add this: declare const cv: any;
+Wait for opencv to load before calling anything:
+cv['onRuntimeInitialized'] = () => {
+{your code here}
+}
+Called function like tutorials in opencv.js tutorials
+https://docs.opencv.org/3.4/d5/d10/tutorial_js_root.html
